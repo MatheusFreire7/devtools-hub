@@ -30,6 +30,13 @@ const RegexTester = lazy(() =>
 const ColorConverter = lazy(() =>
   import('./ColorConverter').then((module) => ({ default: module.ColorConverter })),
 );
+const Ping = lazy(() => import('./Ping').then((module) => ({ default: module.Ping })));
+const DnsLookup = lazy(() =>
+  import('./DnsLookup').then((module) => ({ default: module.DnsLookup })),
+);
+const HttpHeaders = lazy(() =>
+  import('./HttpHeaders').then((module) => ({ default: module.HttpHeaders })),
+);
 
 export type ToolComponent = ComponentType<Record<string, never>>;
 
@@ -44,4 +51,7 @@ export const TOOL_COMPONENTS: Record<string, ToolComponent> = {
   'timestamp-converter': TimestampConverter,
   'regex-tester': RegexTester,
   'color-converter': ColorConverter,
+  ping: Ping,
+  'dns-lookup': DnsLookup,
+  'http-headers': HttpHeaders,
 };

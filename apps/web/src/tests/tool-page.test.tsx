@@ -1,3 +1,4 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen } from '@testing-library/react';
 import { createMemoryRouter, RouterProvider } from 'react-router';
 import { describe, expect, it } from 'vitest';
@@ -13,7 +14,14 @@ function renderTool(slug: string) {
     ],
     { initialEntries: [`/tools/${slug}`] },
   );
-  return render(<RouterProvider router={router} />);
+  const queryClient = new QueryClient({
+    defaultOptions: { queries: { retry: false }, mutations: { retry: false } },
+  });
+  return render(
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>,
+  );
 }
 
 describe('ToolPage', () => {
@@ -33,10 +41,11 @@ describe('ToolPage', () => {
     expect(await screen.findByLabelText('Regex pattern')).toBeInTheDocument();
   });
 
-  it('renders the coming-soon placeholder for a phase 4 tool', async () => {
-    renderTool('ping');
+  it('renders a ready tool component for a phase 4 tool', async () => {
+    renderTool('dns-lookup');
 
-    expect(await screen.findByText(/Coming soon — Phase 4/i)).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: 'DNS Lookup' })).toBeInTheDocument();
+    expect(await screen.findByLabelText('Hostname')).toBeInTheDocument();
   });
 
   it('redirects to 404 for an unknown tool', async () => {

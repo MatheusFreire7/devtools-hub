@@ -151,10 +151,10 @@ export const TOOLS: ToolMeta[] = [
   {
     slug: 'ping',
     title: 'Ping / Latency',
-    description: 'Measure latency and service health of any endpoint.',
+    description: 'Measure latency and service health of the DevTools Hub API.',
     icon: Activity,
     category: 'network',
-    status: 'coming-soon',
+    status: 'ready',
     phase: 4,
   },
   {
@@ -163,7 +163,7 @@ export const TOOLS: ToolMeta[] = [
     description: 'Resolve A, AAAA, MX, TXT and NS records for a hostname.',
     icon: Globe,
     category: 'network',
-    status: 'coming-soon',
+    status: 'ready',
     phase: 4,
   },
   {
@@ -172,7 +172,7 @@ export const TOOLS: ToolMeta[] = [
     description: 'Inspect the HTTP response headers of any public URL.',
     icon: Server,
     category: 'network',
-    status: 'coming-soon',
+    status: 'ready',
     phase: 4,
   },
 ];

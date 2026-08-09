@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 
 import { HashGenerator } from '@/components/tools/HashGenerator';
@@ -16,8 +16,11 @@ describe('HashGenerator', () => {
     });
     fireEvent.click(screen.getByRole('button', { name: /generate/i }));
 
-    const output = await screen.findByLabelText<HTMLTextAreaElement>('Hash output');
-    expect(output.value).toBe('b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9');
+    await waitFor(() => {
+      expect(screen.getByLabelText<HTMLTextAreaElement>('Hash output').value).toBe(
+        'b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9',
+      );
+    });
   });
 
   it('switches algorithm and recomputes', async () => {
@@ -27,8 +30,11 @@ describe('HashGenerator', () => {
     fireEvent.change(screen.getByLabelText(/algorithm/i), { target: { value: 'sha1' } });
     fireEvent.click(screen.getByRole('button', { name: /generate/i }));
 
-    const output = await screen.findByLabelText<HTMLTextAreaElement>('Hash output');
-    expect(output.value).toBe('a9993e364706816aba3e25717850c26c9cd0d89d');
+    await waitFor(() => {
+      expect(screen.getByLabelText<HTMLTextAreaElement>('Hash output').value).toBe(
+        'a9993e364706816aba3e25717850c26c9cd0d89d',
+      );
+    });
   });
 
   it('does not generate when input is empty', () => {
