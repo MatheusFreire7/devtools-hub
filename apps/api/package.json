@@ -1,0 +1,28 @@
+{
+  "name": "@devtools-hub/api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "start": "tsx src/index.ts",
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "test": "vitest run --passWithNoTests"
+  },
+  "dependencies": {
+    "@devtools-hub/shared": "workspace:*",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "helmet": "^8.3.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.2.0",
+    "tsx": "^4.23.11",
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.10"
+  }
+}
