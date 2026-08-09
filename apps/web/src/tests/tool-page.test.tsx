@@ -26,10 +26,17 @@ describe('ToolPage', () => {
     expect(await screen.findByLabelText('JSON input')).toBeInTheDocument();
   });
 
-  it('renders the coming-soon placeholder for a phase 3 tool', async () => {
+  it('renders a ready tool component for a phase 3 tool', async () => {
     renderTool('regex-tester');
 
-    expect(await screen.findByText(/Coming soon — Phase 3/i)).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: 'Regex Tester' })).toBeInTheDocument();
+    expect(await screen.findByLabelText('Regex pattern')).toBeInTheDocument();
+  });
+
+  it('renders the coming-soon placeholder for a phase 4 tool', async () => {
+    renderTool('ping');
+
+    expect(await screen.findByText(/Coming soon — Phase 4/i)).toBeInTheDocument();
   });
 
   it('redirects to 404 for an unknown tool', async () => {

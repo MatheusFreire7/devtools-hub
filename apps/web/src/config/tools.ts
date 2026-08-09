@@ -73,7 +73,7 @@ export const TOOLS: ToolMeta[] = [
     description: 'Flatten nested JSON into CSV and download the result.',
     icon: Table,
     category: 'json',
-    status: 'coming-soon',
+    status: 'ready',
     phase: 3,
   },
   {
@@ -109,7 +109,7 @@ export const TOOLS: ToolMeta[] = [
     description: 'Create MD5, SHA-1, SHA-256 and SHA-512 hashes locally.',
     icon: Hash,
     category: 'crypto',
-    status: 'coming-soon',
+    status: 'ready',
     phase: 3,
   },
   {
@@ -127,7 +127,7 @@ export const TOOLS: ToolMeta[] = [
     description: 'Convert Unix timestamps to ISO and local time formats.',
     icon: Clock,
     category: 'converters',
-    status: 'coming-soon',
+    status: 'ready',
     phase: 3,
   },
   {
@@ -136,7 +136,7 @@ export const TOOLS: ToolMeta[] = [
     description: 'Test regular expressions with live match highlighting.',
     icon: Regex,
     category: 'converters',
-    status: 'coming-soon',
+    status: 'ready',
     phase: 3,
   },
   {
@@ -145,7 +145,7 @@ export const TOOLS: ToolMeta[] = [
     description: 'Convert between HEX, RGB and HSL with a live color picker.',
     icon: Palette,
     category: 'converters',
-    status: 'coming-soon',
+    status: 'ready',
     phase: 3,
   },
   {

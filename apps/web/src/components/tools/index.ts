@@ -15,6 +15,21 @@ const JwtDecoder = lazy(() =>
 const UuidGenerator = lazy(() =>
   import('./UuidGenerator').then((module) => ({ default: module.UuidGenerator })),
 );
+const JsonToCsv = lazy(() =>
+  import('./JsonToCsv').then((module) => ({ default: module.JsonToCsv })),
+);
+const HashGenerator = lazy(() =>
+  import('./HashGenerator').then((module) => ({ default: module.HashGenerator })),
+);
+const TimestampConverter = lazy(() =>
+  import('./TimestampConverter').then((module) => ({ default: module.TimestampConverter })),
+);
+const RegexTester = lazy(() =>
+  import('./RegexTester').then((module) => ({ default: module.RegexTester })),
+);
+const ColorConverter = lazy(() =>
+  import('./ColorConverter').then((module) => ({ default: module.ColorConverter })),
+);
 
 export type ToolComponent = ComponentType<Record<string, never>>;
 
@@ -24,4 +39,9 @@ export const TOOL_COMPONENTS: Record<string, ToolComponent> = {
   'url-encoder': UrlEncoder,
   'jwt-decoder': JwtDecoder,
   'uuid-generator': UuidGenerator,
+  'json-to-csv': JsonToCsv,
+  'hash-generator': HashGenerator,
+  'timestamp-converter': TimestampConverter,
+  'regex-tester': RegexTester,
+  'color-converter': ColorConverter,
 };
