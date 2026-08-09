@@ -1,0 +1,35 @@
+# Planning & documentation (kept local — never uploaded)
+/PLANO_DEVTOOLS_HUB.md
+/DEVELOPMENT_PLAN.md
+
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build output
+dist/
+build/
+*.tsbuildinfo
+.turbo/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Coverage & test reports
+coverage/
+test-results/
+playwright-report/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+*.swp
+*.swo
