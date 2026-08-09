@@ -2,6 +2,7 @@ import { ArrowLeft } from 'lucide-react';
 import { Link, Navigate, useParams } from 'react-router';
 
 import { ComingSoon } from '@/components/tools/ComingSoon';
+import { TOOL_COMPONENTS } from '@/components/tools';
 import { getToolBySlug } from '@/config/tools';
 
 import { ToolCanvas } from '../components/layout/ToolCanvas';
@@ -13,6 +14,8 @@ export function ToolPage() {
   if (!tool) {
     return <Navigate to="/404" replace />;
   }
+
+  const ActiveTool = TOOL_COMPONENTS[tool.slug];
 
   return (
     <ToolCanvas>
@@ -34,7 +37,7 @@ export function ToolPage() {
         </div>
       </div>
 
-      {tool.status === 'coming-soon' ? <ComingSoon tool={tool} /> : null}
+      {tool.status === 'ready' && ActiveTool ? <ActiveTool /> : <ComingSoon tool={tool} />}
     </ToolCanvas>
   );
 }

@@ -64,7 +64,7 @@ export const TOOLS: ToolMeta[] = [
     description: 'Format, minify and validate JSON with syntax errors highlighted.',
     icon: FileJson,
     category: 'json',
-    status: 'coming-soon',
+    status: 'ready',
     phase: 2,
   },
   {
@@ -82,7 +82,7 @@ export const TOOLS: ToolMeta[] = [
     description: 'Encode and decode text in Base64 with UTF-8 support.',
     icon: Binary,
     category: 'crypto',
-    status: 'coming-soon',
+    status: 'ready',
     phase: 2,
   },
   {
@@ -91,7 +91,7 @@ export const TOOLS: ToolMeta[] = [
     description: 'Decode JSON Web Token header, payload and signature locally.',
     icon: KeyRound,
     category: 'crypto',
-    status: 'coming-soon',
+    status: 'ready',
     phase: 2,
   },
   {
@@ -100,7 +100,7 @@ export const TOOLS: ToolMeta[] = [
     description: 'Generate one or many UUID v4 identifiers instantly.',
     icon: Fingerprint,
     category: 'crypto',
-    status: 'coming-soon',
+    status: 'ready',
     phase: 2,
   },
   {
@@ -118,7 +118,7 @@ export const TOOLS: ToolMeta[] = [
     description: 'Encode and decode URL components and query parameters.',
     icon: Link,
     category: 'converters',
-    status: 'coming-soon',
+    status: 'ready',
     phase: 2,
   },
   {
