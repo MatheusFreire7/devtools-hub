@@ -1,17 +1,20 @@
 import { Menu, Moon, Search, Sun, Wrench } from 'lucide-react';
 
+import { usePaletteStore } from '@/store/palette';
 import { useThemeStore } from '@/store/theme';
 
 import { cn } from '../../lib/cn';
 
 interface HeaderProps {
   onOpenNavigation: () => void;
+  onOpenPalette: () => void;
   className?: string;
 }
 
-export function Header({ onOpenNavigation, className }: HeaderProps) {
+export function Header({ onOpenNavigation, onOpenPalette, className }: HeaderProps) {
   const { theme, toggleTheme } = useThemeStore();
   const isDark = theme === 'dark';
+  const paletteOpen = usePaletteStore((state) => state.open);
 
   return (
     <header
@@ -22,6 +25,7 @@ export function Header({ onOpenNavigation, className }: HeaderProps) {
     >
       <button
         type="button"
+        id="navigation-open-button"
         onClick={onOpenNavigation}
         className="flex h-10 w-10 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 md:hidden dark:text-slate-400 dark:hover:bg-slate-800"
         aria-label="Open navigation"
@@ -41,8 +45,11 @@ export function Header({ onOpenNavigation, className }: HeaderProps) {
 
       <button
         type="button"
+        onClick={onOpenPalette}
+        aria-haspopup="dialog"
+        aria-expanded={paletteOpen}
+        aria-label="Search tools"
         className="ml-auto flex h-10 max-w-xs flex-1 items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 text-sm text-slate-400 hover:border-slate-300 hover:text-slate-500 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-500 dark:hover:border-slate-600"
-        aria-label="Search tools (coming soon)"
       >
         <Search className="h-4 w-4" />
         <span className="hidden sm:inline">Search tools…</span>

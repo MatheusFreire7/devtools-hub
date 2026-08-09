@@ -1,4 +1,5 @@
 import { X } from 'lucide-react';
+import { useEffect, useRef } from 'react';
 import { NavLink } from 'react-router';
 
 import { CATEGORIES, getToolsByCategory } from '@/config/tools';
@@ -11,13 +12,39 @@ interface SidebarProps {
 }
 
 export function Sidebar({ open, onClose }: SidebarProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const wasOpen = useRef(false);
+
+  useEffect(() => {
+    if (!open) {
+      if (wasOpen.current) {
+        const opener = document.getElementById('navigation-open-button');
+        opener?.focus();
+      }
+      wasOpen.current = false;
+      return;
+    }
+    wasOpen.current = true;
+    const focusable = containerRef.current?.querySelector<HTMLElement>(
+      'button, a[href], input, select, textarea',
+    );
+    focusable?.focus();
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Escape') onClose();
+    }
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [open, onClose]);
+
   return (
     <div
+      ref={containerRef}
+      role="navigation"
+      aria-label="Tool categories"
       className={cn(
         'fixed inset-y-0 left-0 z-40 w-72 transform border-r border-slate-200 bg-white transition-transform duration-200 md:static md:z-auto md:translate-x-0 dark:border-slate-800 dark:bg-slate-950',
-        open ? 'translate-x-0' : '-translate-x-full',
+        open ? 'translate-x-0' : '-translate-x-full md:translate-x-0',
       )}
-      aria-hidden={!open}
     >
       <div className="flex items-center justify-between px-4 pt-4 md:hidden">
         <span className="font-semibold text-slate-900 dark:text-slate-50">Tools</span>
@@ -31,7 +58,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
         </button>
       </div>
 
-      <nav className="flex flex-col gap-6 overflow-y-auto px-3 py-4" aria-label="Tool categories">
+      <nav className="flex flex-col gap-6 overflow-y-auto px-3 py-4">
         {CATEGORIES.map((category) => {
           const tools = getToolsByCategory(category.id);
           return (
