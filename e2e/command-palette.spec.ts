@@ -46,6 +46,12 @@ test('persists visited tools as recent entries', async ({ page }) => {
   await page.getByRole('link', { name: /Base64 Encoder/ }).click();
   await expect(page).toHaveURL(/\/tools\/base64$/);
 
+  await page.waitForFunction(() => {
+    const raw = localStorage.getItem('devtools-hub:recent');
+    if (!raw) return false;
+    return raw.includes('base64');
+  });
+
   await page.goto('/');
   await page.keyboard.press('Control+K');
 
