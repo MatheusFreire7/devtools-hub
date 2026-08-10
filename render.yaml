@@ -28,7 +28,6 @@ services:
     name: devtools-hub-web
     runtime: static
     plan: free
-    region: oregon
     buildCommand: pnpm install --frozen-lockfile && pnpm --filter @devtools-hub/web build
     staticPublishPath: apps/web/dist
     envVars:
