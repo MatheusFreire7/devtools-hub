@@ -117,10 +117,13 @@ All routes are prefixed with `/api/v1` and rate-limited (60 requests/minute).
 Live demo: <https://devtools-hub-web.onrender.com>. The repository ships a
 [`render.yaml`](render.yaml) Blueprint that deploys both services in one click:
 
-| Service     | Type        | Start / build command                                                     | Port / publish dir |
-| ----------- | ----------- | ------------------------------------------------------------------------- | ------------------ |
-| `devtools-hub-api` | Web Service | `pnpm --filter @devtools-hub/api start`                          | listens on `$PORT` (default `4000`) |
-| `devtools-hub-web` | Static Site | `pnpm install --frozen-lockfile && pnpm --filter @devtools-hub/web build` | publishes `apps/web/dist` |
+| Service     | Type        | Start / build command                                                     | Port / serve |
+| ----------- | ----------- | ------------------------------------------------------------------------- | ------------ |
+| `devtools-hub-api` | Web Service (free) | `pnpm --filter @devtools-hub/api start`                          | listens on `$PORT` (default `4000`) |
+| `devtools-hub-web` | Web Service (free) | `pnpm install --frozen-lockfile && pnpm --filter @devtools-hub/web build` | `pnpm --filter @devtools-hub/web start` serves `apps/web/dist` |
+
+> Running everything on the free tier means both services spin down after ~15 min of inactivity and
+> cold-start on the next visit (a few seconds).
 
 ### Environment variables (set in the Render dashboard)
 
@@ -130,7 +133,7 @@ Live demo: <https://devtools-hub-web.onrender.com>. The repository ships a
 | `CORS_ORIGIN`     | API     | `https://devtools-hub-web.onrender.com` so the browser can call the API |
 | `VITE_API_BASE_URL` | Web   | `https://devtools-hub-api.onrender.com` — required at build time |
 
-Since the static site is served on a different origin than the API, both variables are mandatory for
+Since the web app is served on a different origin than the API, both variables are mandatory for
 the network tools to work in production. Do not set `VITE_API_BASE_URL` during local development —
 the `/api` dev proxy handles that case.
 

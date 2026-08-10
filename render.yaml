@@ -1,11 +1,12 @@
-# Render Blueprint — deploys the API (web service) and the web app (static site).
+# Render Blueprint — deploys the API (web service) and the web app (web service).
+# Both run on the free tier; the web service serves the Vite build (apps/web/dist)
+# via apps/web/server.mjs.
 #
-# 1. API (Web Service)
-#    - Node runtime, free plan
+# 1. API (Web Service, free)
 #    - Health probe: GET /api/v1/ping (used by Render + uptime monitors)
 #    - Set CORS_ORIGIN to the deployed web URL, e.g. https://devtools-hub-web.onrender.com
-# 2. Web (Static Site)
-#    - Builds apps/web with Vite, publishes apps/web/dist
+# 2. Web (Web Service, free)
+#    - Builds apps/web with Vite, serves apps/web/dist
 #    - Set VITE_API_BASE_URL to the deployed API URL, e.g. https://devtools-hub-api.onrender.com
 #      (required at build time so the browser calls the API directly)
 
@@ -26,15 +27,14 @@ services:
 
   - type: web
     name: devtools-hub-web
-    runtime: static
+    runtime: node
+    plan: free
+    region: oregon
     buildCommand: pnpm install --frozen-lockfile && pnpm --filter @devtools-hub/web build
-    staticPublishPath: apps/web/dist
+    startCommand: pnpm --filter @devtools-hub/web start
+    healthCheckPath: /
     envVars:
       - key: VITE_API_BASE_URL
         sync: false
       - key: NODE_VERSION
         value: '22'
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html
