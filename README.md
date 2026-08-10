@@ -1,8 +1,8 @@
 # DevTools Hub
 
 [![CI](https://github.com/MatheusFreire7/devtools-hub/actions/workflows/ci.yml/badge.svg)](https://github.com/MatheusFreire7/devtools-hub/actions/workflows/ci.yml)
-[![License](https://img.shields.io/github/license/MatheusFreire7/devtools-hub)](LICENSE)
-[![GitHub release](https://img.shields.io/github/v/release/MatheusFreire7/devtools-hub)](https://github.com/MatheusFreire7/devtools-hub/releases)
+[![License](https://img.shields.io/github/license/MatheusFreire7/devtools-hub?v=2)](LICENSE)
+[![GitHub release](https://img.shields.io/github/v/release/MatheusFreire7/devtools-hub?v=2)](https://github.com/MatheusFreire7/devtools-hub/releases)
 
 A curated suite of developer utilities — format, convert, validate and inspect data. Client-side
 tools run entirely in your browser; your data never leaves your machine. A small API powers the
