@@ -1,0 +1,55 @@
+name: Deploy verify
+
+on:
+  workflow_dispatch:
+    inputs:
+      web_url:
+        description: 'Public URL of the deployed web app'
+        required: true
+        default: 'https://devtools-hub-web.onrender.com'
+      api_url:
+        description: 'Public URL of the deployed API'
+        required: true
+        default: 'https://devtools-hub-api.onrender.com'
+
+concurrency:
+  group: deploy-verify
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Verify deployed stack
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Run e2e against the deployed stack
+        run: pnpm exec playwright test --config playwright.deployed.config.ts
+        env:
+          E2E_WEB_URL: ${{ inputs.web_url }}
+          E2E_API_URL: ${{ inputs.api_url }}
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-deployed
+          path: playwright-report/
+          retention-days: 7

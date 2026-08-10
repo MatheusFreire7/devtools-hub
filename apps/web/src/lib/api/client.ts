@@ -6,8 +6,15 @@ import type {
   PingResponse,
 } from '@devtools-hub/shared';
 
+const API_BASE_URL =
+  (import.meta.env.VITE_API_BASE_URL as string | undefined)?.replace(/\/+$/, '') ?? '';
+
+function apiUrl(path: string): string {
+  return `${API_BASE_URL}${path}`;
+}
+
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(path, {
+  const response = await fetch(apiUrl(path), {
     headers: { 'Content-Type': 'application/json' },
     ...init,
   });

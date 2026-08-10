@@ -8,6 +8,8 @@ A curated suite of developer utilities — format, convert, validate and inspect
 tools run entirely in your browser; your data never leaves your machine. A small API powers the
 network tools (DNS, latency, HTTP headers) with built-in protections.
 
+**Live demo:** <https://devtools-hub-web.onrender.com> (API: <https://devtools-hub-api.onrender.com>)
+
 ## Features
 
 - **13 ready tools** across four categories:
@@ -84,12 +86,16 @@ pnpm exec playwright install chromium
 
 ### Environment variables
 
-| Variable      | App | Default                 | Description                             |
-| ------------- | --- | ----------------------- | --------------------------------------- |
-| `PORT`        | API | `4000`                  | Port the API listens on                 |
-| `CORS_ORIGIN` | API | `http://localhost:5173` | Comma-separated list of allowed origins |
+| Variable          | App | Default                 | Description                                  |
+| ----------------- | --- | ----------------------- | -------------------------------------------- |
+| `PORT`            | API | `4000`                  | Port the API listens on (Render sets its own) |
+| `CORS_ORIGIN`     | API | `http://localhost:5173` | Comma-separated list of allowed origins      |
+| `VITE_API_BASE_URL` | Web | *(empty)*            | Absolute URL of the deployed API (production build) |
 
-In development the web app proxies `/api` to `http://localhost:4000` (see `apps/web/vite.config.ts`).
+In development the web app proxies `/api` to `http://localhost:4000` (see `apps/web/vite.config.ts`);
+the proxy is a dev-only convenience. In a production build the browser talks directly to the API at
+`VITE_API_BASE_URL`, so that variable must point to the deployed API (set it as a build-time env var
+on Render).
 
 ## API reference
 
@@ -105,6 +111,48 @@ All routes are prefixed with `/api/v1` and rate-limited (60 requests/minute).
 [^1]:
     The HTTP headers endpoint validates the URL to prevent server-side request forgery (SSRF)
     and only returns the status line and headers — never the response body.
+
+## Deployment (Render)
+
+Live demo: <https://devtools-hub-web.onrender.com>. The repository ships a
+[`render.yaml`](render.yaml) Blueprint that deploys both services in one click:
+
+| Service     | Type        | Start / build command                                                     | Port / publish dir |
+| ----------- | ----------- | ------------------------------------------------------------------------- | ------------------ |
+| `devtools-hub-api` | Web Service | `pnpm --filter @devtools-hub/api start`                          | listens on `$PORT` (default `4000`) |
+| `devtools-hub-web` | Static Site | `pnpm install --frozen-lockfile && pnpm --filter @devtools-hub/web build` | publishes `apps/web/dist` |
+
+### Environment variables (set in the Render dashboard)
+
+| Variable          | Service | Description                                              |
+| ----------------- | ------- | -------------------------------------------------------- |
+| `PORT`            | API     | Render injects its own port; leave unset to default `4000` |
+| `CORS_ORIGIN`     | API     | `https://devtools-hub-web.onrender.com` so the browser can call the API |
+| `VITE_API_BASE_URL` | Web   | `https://devtools-hub-api.onrender.com` — required at build time |
+
+Since the static site is served on a different origin than the API, both variables are mandatory for
+the network tools to work in production. Do not set `VITE_API_BASE_URL` during local development —
+the `/api` dev proxy handles that case.
+
+### Uptime monitoring
+
+The health-check probe is `GET /api/v1/ping` (returns JSON `{ "status": "ok", ... }`). It doubles as
+Render's own health check (`healthCheckPath`) and as a target for external uptime monitors such as
+UptimeRobot or Better Stack, e.g. `curl https://devtools-hub-api.onrender.com/api/v1/ping`.
+
+### Verify the deployed stack
+
+A dedicated Playwright config runs end-to-end checks (page loads, API probe, and every network tool
+through real CORS) against the deployed URLs. These live in `e2e-deployed/` and are intentionally
+excluded from the standard `pnpm test:e2e` run:
+
+```bash
+E2E_WEB_URL=https://devtools-hub-web.onrender.com \
+E2E_API_URL=https://devtools-hub-api.onrender.com \
+pnpm exec playwright test --config playwright.deployed.config.ts
+```
+
+Or trigger the **Deploy verify** GitHub Actions workflow (manual dispatch) with the same inputs.
 
 ## Testing
 
