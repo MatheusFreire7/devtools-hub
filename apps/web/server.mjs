@@ -41,7 +41,13 @@ const server = createServer((req, res) => {
   }
 
   const type = MIME[extname(filePath)] ?? 'application/octet-stream';
-  res.writeHead(200, { 'Content-Type': type, 'Cache-Control': 'no-cache' });
+  const isShell = urlPath === '/' || urlPath === '/index.html';
+  const cacheControl = isShell
+    ? 'no-store'
+    : urlPath.startsWith('/assets/')
+      ? 'public, max-age=31536000, immutable'
+      : 'no-store';
+  res.writeHead(200, { 'Content-Type': type, 'Cache-Control': cacheControl });
   createReadStream(filePath).pipe(res);
 });
 
